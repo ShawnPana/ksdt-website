@@ -1,8 +1,6 @@
-# Clean Next.js + Sanity app
+# KSDT Website
 
-This template includes a [Next.js](https://nextjs.org/) app with a [Sanity Studio](https://www.sanity.io/) – an open-source React application that connects to your Sanity project’s hosted dataset. The Studio is configured locally and can then be deployed for content collaboration.
-
-![Screenshot of Sanity Studio using Presentation Tool to do Visual Editing](/sanity-next-preview.png)
+We use a template that includes a [Next.js](https://nextjs.org/) app with a [Sanity Studio](https://www.sanity.io/) – an open-source React application that connects to your Sanity project’s hosted dataset. The Studio is configured locally and can then be deployed for content collaboration.
 
 ## Features
 
@@ -14,10 +12,6 @@ This template includes a [Next.js](https://nextjs.org/) app with a [Sanity Studi
 - **AI-powered Media Support:** Auto-generate alt text with [Sanity AI Assist](https://www.sanity.io/ai-assist).
 - **On-demand Publishing:** No waiting for rebuilds—new content is live instantly with Incremental Static Revalidation.
 - **Easy Media Management:** [Integrated Unsplash support](https://www.sanity.io/plugins/sanity-plugin-asset-source-unsplash) for seamless media handling.
-
-## Demo
-
-https://template-nextjs-clean.sanity.dev
 
 ## Getting Started
 
