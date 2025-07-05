@@ -2,7 +2,7 @@
  * Demo data used as placeholders and initial values for the blog
  */
 
-export const title = "Sanity + Next.js";
+export const title = "KSDT Radio";
 
 export const description = [
   {
@@ -31,7 +31,7 @@ export const description = [
         _key: "4a58edd077883",
         _type: "span",
         marks: ["1f8991913ea8"],
-        text: "Sanity",
+        text: "Shawn",
       },
       {
         _key: "4a58edd077884",
