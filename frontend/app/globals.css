@@ -40,6 +40,8 @@ body {
   line-height: 1.6;
   color: var(--color-black);
   background-color: var(--color-white);
+  margin: 0;
+  padding: 0;
 }
 
 /* Bold headlines like The Face */
@@ -62,4 +64,11 @@ img {
 /* Link hover effects */
 a {
   transition: all var(--default-transition-duration) ease;
+}
+
+/* Ensure the header sticks to the very top */
+header.fixed {
+  top: 0;
+  margin-top: 0;
+  padding-top: 0;
 }

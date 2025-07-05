@@ -8,7 +8,7 @@ export default async function Header() {
   });
 
   return (
-    <header className="fixed z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="fixed top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-6">
           {/* Logo - The Face Style */}
