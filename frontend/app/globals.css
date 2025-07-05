@@ -11,25 +11,55 @@
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
   --color-framework: #000;
-  --color-black: #0b0b0b;
-  --color-white: #fff;
-  --color-brand: #f50;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-brand: #ff0000;
   --color-blue: #0052ff;
   --color-yellow: #cdea19;
-  --color-gray-50: #f6f6f8;
-  --color-gray-100: #eeeef1;
-  --color-gray-200: #e3e4e8;
-  --color-gray-300: #bbbdc9;
-  --color-gray-400: #9499ad;
-  --color-gray-500: #727892;
-  --color-gray-600: #515870;
-  --color-gray-700: #383d51;
-  --color-gray-800: #252837;
-  --color-gray-900: #1b1d27;
-  --color-gray-950: #13141b;
+  --color-gray-50: #f9f9f9;
+  --color-gray-100: #f1f1f1;
+  --color-gray-200: #e1e1e1;
+  --color-gray-300: #c1c1c1;
+  --color-gray-400: #9e9e9e;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  --color-gray-950: #0a0a0a;
 
-  --font-display: "Inter", "sans-serif";
-  --font-sans: "Inter", "sans-serif";
+  --font-display: "Inter", "Helvetica Neue", "Arial", sans-serif;
+  --font-sans: "Inter", "Helvetica Neue", "Arial", sans-serif;
 
-  --default-transition-duration: 250ms;
+  --default-transition-duration: 300ms;
+}
+
+/* The Face inspired typography */
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+/* Bold headlines like The Face */
+h1, h2, h3 {
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Smooth transitions */
+* {
+  transition: opacity var(--default-transition-duration) ease;
+}
+
+/* Image hover effects */
+img {
+  transition: transform var(--default-transition-duration) ease;
+}
+
+/* Link hover effects */
+a {
+  transition: all var(--default-transition-duration) ease;
 }

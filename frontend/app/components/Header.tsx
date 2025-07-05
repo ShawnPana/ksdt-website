@@ -8,27 +8,40 @@ export default async function Header() {
   });
 
   return (
-    <header className="fixed z-50 h-24 inset-0 bg-white/80 flex items-center backdrop-blur-lg">
-      <div className="container py-6 px-2 sm:px-6">
-        <div className="flex items-center justify-between gap-5">
-          <Link className="flex items-center gap-2" href="/">
-            <span className="text-lg sm:text-2xl pl-2 font-semibold">
-              {settings?.title || "KSDT Radio"}
+    <header className="fixed z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between py-6">
+          {/* Logo - The Face Style */}
+          <Link className="flex items-center" href="/">
+            <span className="text-3xl font-black tracking-tight hover:opacity-70 transition-opacity">
+              {settings?.title || "KSDT"}
             </span>
           </Link>
 
-          <nav>
-            <ul
-              role="list"
-              className="flex items-center gap-4 md:gap-6 leading-5 text-xs sm:text-base tracking-tight font-mono"
-            >
-              <li>
-                <Link href="/about" className="hover:underline">
-                  About
-                </Link>
-              </li>
-            </ul>
+          {/* Navigation Menu */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/music" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
+              Music
+            </Link>
+            <Link href="/culture" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
+              Culture
+            </Link>
+            <Link href="/style" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
+              Style
+            </Link>
+            <Link href="/about" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
+              About
+            </Link>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button className="md:hidden flex items-center justify-center w-10 h-10">
+            <div className="space-y-1">
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+              <div className="w-6 h-0.5 bg-black"></div>
+            </div>
+          </button>
         </div>
       </div>
     </header>
