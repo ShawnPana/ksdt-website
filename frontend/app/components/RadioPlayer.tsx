@@ -98,10 +98,8 @@ export default function RadioPlayer() {
     const animate = () => {
       requestAnimationFrame(animate)
       
-      // Slowly rotate the model if it's loaded
-      if (modelRef.current) {
-        modelRef.current.rotation.y += 0.005 // Adjust speed as needed - lower values for slower rotation
-      }
+      // Rotate the entire scene instead of just the model
+      scene.rotation.y += 0.005 // Adjust speed as needed - lower values for slower rotation
       
       renderer.render(scene, camera)
     }
