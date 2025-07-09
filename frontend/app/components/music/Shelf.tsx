@@ -97,10 +97,17 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     directionalLight.position.set(5, 5, 5)
     scene.add(directionalLight)
     
-    // Raycaster for hover detection
+    // Raycaster for hover and click detection
     const raycaster = new THREE.Raycaster()
     const pointer = new THREE.Vector2()
-    const albumMeshes: { mesh: THREE.Mesh; originalY: number; isHovered: boolean }[] = []
+    const albumMeshes: { 
+      mesh: THREE.Mesh; 
+      originalY: number; 
+      originalX: number;
+      originalRotationY: number;
+      isHovered: boolean;
+      isSelected: boolean;
+    }[] = []
     
     // Load and position albums side by side like ||||| (book spines)
     const loadAlbums = async () => {
@@ -129,7 +136,10 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
           albumMeshes.push({ 
             mesh: albumMesh, 
             originalY: albumMesh.position.y,
-            isHovered: false 
+            originalX: albumMesh.position.x,
+            originalRotationY: albumMesh.rotation.y,
+            isHovered: false,
+            isSelected: false
           })
           
           scene.add(albumMesh)
@@ -172,23 +182,75 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
       }
     }
     
-    // Add mouse move event listener
+    // Click handler for album selection
+    const handleClick = (event: MouseEvent) => {
+      if (!containerRef.current) return
+      
+      event.preventDefault()
+      
+      // Calculate pointer position in normalized device coordinates
+      const rect = containerRef.current.getBoundingClientRect()
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+      
+      // Set raycaster from camera and pointer
+      raycaster.setFromCamera(pointer, camera)
+      
+      // Calculate objects intersecting the picking ray
+      const meshes = albumMeshes.map(item => item.mesh)
+      const intersects = raycaster.intersectObjects(meshes)
+      
+      if (intersects.length > 0) {
+        // Album was clicked
+        const clickedMesh = intersects[0].object
+        const albumItem = albumMeshes.find(item => item.mesh === clickedMesh)
+        
+        if (albumItem) {
+          // Reset all other albums first
+          albumMeshes.forEach(item => {
+            if (item !== albumItem) {
+              item.isSelected = false
+            }
+          })
+          
+          // Toggle the clicked album
+          albumItem.isSelected = !albumItem.isSelected
+        }
+      } else {
+        // Clicked elsewhere - reset all albums
+        albumMeshes.forEach(albumItem => {
+          albumItem.isSelected = false
+        })
+      }
+    }
+    
+    // Add event listeners
     containerRef.current.addEventListener('mousemove', handleMouseMove)
+    containerRef.current.addEventListener('click', handleClick)
     const currentContainer = containerRef.current
     
     loadAlbums()
     
-    // Animation loop with hover effects
+    // Animation loop with hover and selection effects
     const animate = () => {
       requestAnimationFrame(animate)
       
-      // Animate hover effects
+      // Animate hover and selection effects
       albumMeshes.forEach(albumItem => {
-        const targetY = albumItem.isHovered ? albumItem.originalY + 0.2 : albumItem.originalY
+        // Hover effect (only if not selected)
+        const hoverTargetY = albumItem.isHovered && !albumItem.isSelected ? 
+          albumItem.originalY + 0.2 : albumItem.originalY
         
-        // Smooth transition to target position
+        // Selection effect
+        const targetX = albumItem.isSelected ? albumItem.originalX + 0.8 : albumItem.originalX
+        const targetRotationY = albumItem.isSelected ? 0 : albumItem.originalRotationY
+        const targetY = albumItem.isSelected ? albumItem.originalY : hoverTargetY
+        
+        // Smooth transitions
         const lerpFactor = 0.1
         albumItem.mesh.position.y += (targetY - albumItem.mesh.position.y) * lerpFactor
+        albumItem.mesh.position.x += (targetX - albumItem.mesh.position.x) * lerpFactor
+        albumItem.mesh.rotation.y += (targetRotationY - albumItem.mesh.rotation.y) * lerpFactor
       })
       
       renderer.render(scene, camera)
@@ -214,6 +276,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     return () => {
       if (currentContainer) {
         currentContainer.removeEventListener('mousemove', handleMouseMove)
+        currentContainer.removeEventListener('click', handleClick)
         if (currentContainer.contains(renderer.domElement)) {
           currentContainer.removeChild(renderer.domElement)
         }
