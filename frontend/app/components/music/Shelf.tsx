@@ -208,15 +208,22 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
         const albumItem = albumMeshes.find(item => item.mesh === clickedMesh)
         
         if (albumItem) {
-          // Reset all other albums first
-          albumMeshes.forEach(item => {
-            if (item !== albumItem) {
-              item.isSelected = false
+          if (albumItem.isSelected && albumItem.isHovered) {
+            // Clicking on an already selected album while hovering - redirect to link
+            const albumIndex = albumMeshes.indexOf(albumItem)
+            const albumData = albums[albumIndex]
+            if (albumData && albumData.link) {
+              window.open(albumData.link, '_blank', 'noopener,noreferrer')
             }
-          })
-          
-          // Toggle the clicked album
-          albumItem.isSelected = !albumItem.isSelected
+          } else if (!albumItem.isSelected) {
+            // Reset all other albums first
+            albumMeshes.forEach(item => {
+              item.isSelected = false
+            })
+            
+            // Select the clicked album
+            albumItem.isSelected = true
+          }
         }
       } else {
         // Clicked elsewhere - reset all albums
