@@ -9,6 +9,7 @@ export default function RadioPlayer() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingProgress, setLoadingProgress] = useState(0)
   const modelRef = useRef<THREE.Group | null>(null)
+  const [showHelpers, setShowHelpers] = useState(true) // State to toggle helpers visibility
   
   // Initialize Three.js scene
   useEffect(() => {
@@ -18,6 +19,11 @@ export default function RadioPlayer() {
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0xffffff) // White background
     
+    // Add axes helper to the scene (global coordinate system)
+    const sceneAxesHelper = new THREE.AxesHelper(2) // Size 2 units
+    sceneAxesHelper.visible = showHelpers
+    scene.add(sceneAxesHelper)
+    
     // Camera
     const camera = new THREE.PerspectiveCamera(
       45, 
@@ -25,7 +31,7 @@ export default function RadioPlayer() {
       0.1, 
       1000
     )
-    camera.position.set(0, 0.6, 2.5)
+    camera.position.set(0, 0.70, 3)
     
     // Renderer
     const renderer = new THREE.WebGLRenderer({ 
@@ -47,6 +53,10 @@ export default function RadioPlayer() {
     directionalLight.castShadow = false  // Disable shadows for cleaner white background
     scene.add(directionalLight)
     
+    // Variables to store the helpers
+    let boundingBox: THREE.Box3Helper | null = null
+    let modelAxesHelper: THREE.AxesHelper | null = null
+    
     // Load 3D model using GLTF
     try {
       const gltfLoader = new GLTFLoader()
@@ -67,6 +77,18 @@ export default function RadioPlayer() {
           
           modelRef.current = model
           scene.add(model)
+          
+          // Add axes helper to the model (local coordinate system)
+          modelAxesHelper = new THREE.AxesHelper(1) // Size 1 unit
+          modelAxesHelper.visible = showHelpers
+          model.add(modelAxesHelper)
+          
+          // Create bounding box for the model
+          const bbox = new THREE.Box3().setFromObject(model)
+          boundingBox = new THREE.Box3Helper(bbox, new THREE.Color(0xff0000))
+          boundingBox.visible = showHelpers
+          scene.add(boundingBox)
+          
           setIsLoading(false)
         },
         (progress) => {
@@ -85,6 +107,17 @@ export default function RadioPlayer() {
           const material = new THREE.MeshStandardMaterial({ color: 0x333333 })
           const fallbackModel = new THREE.Mesh(geometry, material)
           scene.add(fallbackModel)
+          
+          // Add axes helper to the fallback model
+          modelAxesHelper = new THREE.AxesHelper(1)
+          modelAxesHelper.visible = showHelpers
+          fallbackModel.add(modelAxesHelper)
+          
+          // Create bounding box for the fallback model
+          const bbox = new THREE.Box3().setFromObject(fallbackModel)
+          boundingBox = new THREE.Box3Helper(bbox, new THREE.Color(0xff0000))
+          boundingBox.visible = showHelpers
+          scene.add(boundingBox)
         }
       )
     } catch (err) {
@@ -100,6 +133,11 @@ export default function RadioPlayer() {
       
       // Rotate the entire scene instead of just the model
       scene.rotation.y += 0.005 // Adjust speed as needed - lower values for slower rotation
+      
+      // Update helpers visibility based on state
+      if (sceneAxesHelper) sceneAxesHelper.visible = showHelpers
+      if (modelAxesHelper) modelAxesHelper.visible = showHelpers
+      if (boundingBox) boundingBox.visible = showHelpers
       
       renderer.render(scene, camera)
     }
@@ -146,7 +184,7 @@ export default function RadioPlayer() {
         }
       })
     }
-  }, [])
+  }, [showHelpers]) // Keep showHelpers in the dependency array
   
   return (
     <div className="relative">

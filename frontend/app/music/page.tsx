@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function MusicPage() {
   return (
     <div className="container mx-auto px-4 pt-24 pb-12">
-      <h1 className="text-4xl font-bold mb-8">KSDT Live Radio</h1>
+      {/* <h1 className="text-4xl font-bold mb-8">KSDT Live Radio</h1> */}
       
       {/* Three.js Radio Player Component */}
       <div className="mb-16">
