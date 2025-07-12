@@ -15,8 +15,18 @@ interface AlbumProps {
   };
 }
 
-// NEW: Spotify API functions
+// Shared token cache for all album requests
+let tokenCache: { token: string; expires: number } | null = null;
+
+// NEW: Get or fetch Spotify token with caching
 async function getSpotifyToken(): Promise<string> {
+  const now = Date.now();
+  
+  // Check if we have a valid cached token
+  if (tokenCache && tokenCache.expires > now) {
+    return tokenCache.token;
+  }
+  
   const response = await fetch('/api/spotify/token', {
     method: 'POST',
     headers: {
@@ -29,7 +39,72 @@ async function getSpotifyToken(): Promise<string> {
   }
   
   const data = await response.json();
+  
+  // Cache token client-side as well
+  tokenCache = {
+    token: data.access_token,
+    expires: now + (data.expires_in * 1000) - 60000 // Subtract 1 minute for safety
+  };
+  
   return data.access_token;
+}
+
+// NEW: Parallel album data fetching
+export async function fetchAlbumData(albums: AlbumProps[]): Promise<{
+  coverUrl: string;
+  spotifyUrl?: string;
+  originalProps: AlbumProps;
+}[]> {
+  try {
+    // Get token once for all albums
+    const token = await getSpotifyToken();
+    
+    // Create parallel promises for all Spotify albums
+    const albumDataPromises = albums.map(async (album) => {
+      try {
+        if (album.spotifyData && !album.coverUrl) {
+          const spotifyResult = await searchSpotifyAlbum(
+            album.spotifyData.artist,
+            album.spotifyData.album,
+            token
+          );
+          
+          if (spotifyResult) {
+            return {
+              coverUrl: spotifyResult.coverUrl,
+              spotifyUrl: spotifyResult.spotifyUrl,
+              originalProps: album
+            };
+          }
+        }
+        
+        // Fallback to local image or placeholder
+        return {
+          coverUrl: album.coverUrl || 'conradave.png',
+          spotifyUrl: album.link,
+          originalProps: album
+        };
+      } catch (error) {
+        console.warn(`Failed to fetch data for ${album.title}:`, error);
+        return {
+          coverUrl: album.coverUrl || 'conradave.png',
+          spotifyUrl: album.link,
+          originalProps: album
+        };
+      }
+    });
+    
+    // Wait for all album data to be fetched in parallel
+    return await Promise.all(albumDataPromises);
+  } catch (error) {
+    console.error('Failed to fetch album data:', error);
+    // Return fallback data for all albums
+    return albums.map(album => ({
+      coverUrl: album.coverUrl || 'conradave.png',
+      spotifyUrl: album.link,
+      originalProps: album
+    }));
+  }
 }
 
 async function searchSpotifyAlbum(artist: string, album: string, token: string): Promise<{
@@ -149,6 +224,63 @@ export function createAlbumMesh({
       reject(error)
     }
   })
+}
+
+// NEW: Enhanced mesh creation for parallel processing
+export async function createAlbumMeshFromData({
+  coverUrl,
+  position,
+  scale = 1,
+}: {
+  coverUrl: string;
+  position: { x: number; y: number; z: number };
+  scale?: number;
+}): Promise<THREE.Mesh> {
+  return new Promise((resolve, reject) => {
+    const textureLoader = new THREE.TextureLoader();
+    
+    const textureUrl = coverUrl?.startsWith('http') 
+      ? coverUrl 
+      : `/albums/${coverUrl}`;
+    
+    textureLoader.load(
+      textureUrl,
+      (texture) => {
+        // OPTIMIZATION 4: Texture optimizations
+        texture.generateMipmaps = false;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        
+        // Create album geometry
+        const albumWidth = 1.8 * scale;
+        const albumHeight = 1.8 * scale;
+        const albumDepth = 0.05 * scale;
+        
+        const geometry = new THREE.BoxGeometry(albumWidth, albumHeight, albumDepth);
+        
+        // Create materials for each side of the album
+        const materials = [
+          new THREE.MeshStandardMaterial({ color: 0x111111 }), // Right side
+          new THREE.MeshStandardMaterial({ color: 0x111111 }), // Left side
+          new THREE.MeshStandardMaterial({ color: 0x111111 }), // Top
+          new THREE.MeshStandardMaterial({ color: 0x111111 }), // Bottom
+          new THREE.MeshStandardMaterial({ map: texture }), // Front (album cover)
+          new THREE.MeshStandardMaterial({ color: 0x222222 }) // Back
+        ];
+        
+        // Create album mesh
+        const album = new THREE.Mesh(geometry, materials);
+        album.position.set(position.x, position.y, position.z);
+        
+        resolve(album);
+      },
+      undefined,
+      (error) => {
+        console.error('Error loading album cover:', error);
+        reject(error);
+      }
+    );
+  });
 }
 
 // Simple Album component that just holds metadata

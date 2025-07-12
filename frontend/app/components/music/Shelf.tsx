@@ -14,7 +14,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { createAlbumMesh } from './Album'
+import { createAlbumMesh, fetchAlbumData, createAlbumMeshFromData } from './Album'
 
 // Album data structure
 interface AlbumData {
@@ -173,48 +173,79 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
       isSelected: boolean;
     }[] = []
     
-    // Load and position albums side by side like ||||| (book spines)
+    // NEW: Parallel album loading
     const loadAlbums = async () => {
-      const albumSpacing = 0.05 // Very close together like book spines
-      const startX = -(albums.length - 1) * albumSpacing / 2 // Center the group
+      const albumSpacing = 0.05
+      const startX = -(albums.length - 1) * albumSpacing / 2
       
-      for (let i = 0; i < albums.length; i++) {
-        try {
-          const albumMesh = await createAlbumMesh({
-            coverUrl: albums[i].coverUrl,
-            spotifyData: albums[i].spotifyData, // NEW: Pass Spotify data
-            title: albums[i].title,
-            artist: albums[i].artist,
-            link: albums[i].link,
-            position: {
-              x: startX + (i * albumSpacing),
-              y: 0,
-              z: 0
-            },
-            scale: 0.8
-          })
-          
-          // Rotate 90 degrees on Y axis to show like book spines
-          albumMesh.rotation.y = Math.PI / 2
-          
-          // Store reference to mesh with original position and hover state
-          albumMeshes.push({ 
-            mesh: albumMesh, 
-            originalY: albumMesh.position.y,
-            originalX: albumMesh.position.x,
-            originalZ: albumMesh.position.z,
-            originalRotationY: albumMesh.rotation.y,
-            isHovered: false,
-            isSelected: false
-          })
-          
-          scene.add(albumMesh)
-        } catch (error) {
-          console.error(`Failed to load album ${albums[i].title}:`, error)
-        }
+      try {
+        // STEP 1: Fetch all album data in parallel (Spotify API calls)
+        console.log('Fetching album data in parallel...')
+        const albumDataList = await fetchAlbumData(albums.map((album, i) => ({
+          ...album,
+          position: {
+            x: startX + (i * albumSpacing),
+            y: 0,
+            z: 0
+          },
+          scale: 0.8
+        })))
+        
+        console.log('Album data fetched, creating meshes...')
+        
+        // STEP 2: Create all meshes in parallel (texture loading)
+        const meshPromises = albumDataList.map(async (albumData, i) => {
+          try {
+            const mesh = await createAlbumMeshFromData({
+              coverUrl: albumData.coverUrl,
+              position: {
+                x: startX + (i * albumSpacing),
+                y: 0,
+                z: 0
+              },
+              scale: 0.8
+            })
+            
+            return {
+              mesh,
+              albumData: albums[i], // Original album data for links
+              index: i
+            }
+          } catch (error) {
+            console.error(`Failed to create mesh for album ${i}:`, error)
+            return null
+          }
+        })
+        
+        // STEP 3: Wait for all meshes to be created
+        const meshResults = await Promise.all(meshPromises)
+        
+        // STEP 4: Add successful meshes to scene
+        meshResults.forEach((result) => {
+          if (result) {
+            result.mesh.rotation.y = Math.PI / 2
+            
+            albumMeshes.push({
+              mesh: result.mesh,
+              originalY: result.mesh.position.y,
+              originalX: result.mesh.position.x,
+              originalZ: result.mesh.position.z,
+              originalRotationY: result.mesh.rotation.y,
+              isHovered: false,
+              isSelected: false
+            })
+            
+            scene.add(result.mesh)
+          }
+        })
+        
+        console.log(`Successfully loaded ${albumMeshes.length}/${albums.length} albums`)
+        setIsLoading(false)
+        
+      } catch (error) {
+        console.error('Failed to load albums:', error)
+        setIsLoading(false)
       }
-      
-      setIsLoading(false)
     }
     
     // OPTIMIZATION 1: Intersection Observer for hover detection + throttling
