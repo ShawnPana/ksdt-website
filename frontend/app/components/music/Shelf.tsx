@@ -141,7 +141,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     )
     camera.position.set(0, 0, 3) // Closer view for book spine effect
     
-    // Renderer
+    // Renderer with high-quality settings
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true
@@ -149,15 +149,47 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.outputColorSpace = THREE.SRGBColorSpace
+    
+    // Remove shadows - keep only tone mapping for quality
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.toneMappingExposure = 1.2
+    
     containerRef.current.appendChild(renderer.domElement)
     
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xFAECE2, 1)
+    // High-quality lighting setup
+    
+    // 1. Ambient light for overall illumination
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4)
     scene.add(ambientLight)
     
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    // directionalLight.position.set(5, 5, 5)
-    // scene.add(directionalLight)
+    // 2. Main directional light (key light) - no shadows
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.0)
+    mainLight.position.set(5, 10, 5)
+    scene.add(mainLight)
+    
+    // 3. Fill light from the opposite side
+    const fillLight = new THREE.DirectionalLight(0x87CEEB, 0.3) // Slightly blue
+    fillLight.position.set(-3, 5, 2)
+    scene.add(fillLight)
+    
+    // 4. Rim light for edge definition
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    rimLight.position.set(0, 2, -5)
+    scene.add(rimLight)
+    
+    // 5. Point lights for additional depth
+    const pointLight1 = new THREE.PointLight(0xffffff, 0.3, 10)
+    pointLight1.position.set(2, 3, 3)
+    scene.add(pointLight1)
+    
+    const pointLight2 = new THREE.PointLight(0xffd700, 0.2, 8) // Warm accent
+    pointLight2.position.set(-2, 2, 1)
+    scene.add(pointLight2)
+    
+    // Add a subtle environment map for reflections
+    const pmremGenerator = new THREE.PMREMGenerator(renderer)
+    const envTexture = pmremGenerator.fromScene(new THREE.Scene()).texture
+    scene.environment = envTexture
     
     // OPTIMIZATION 3: Object pooling - create reusable objects once
     const raycaster = new THREE.Raycaster()

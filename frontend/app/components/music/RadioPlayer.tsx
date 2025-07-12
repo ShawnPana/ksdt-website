@@ -9,7 +9,7 @@ export default function RadioPlayer() {
   const [isLoading, setIsLoading] = useState(true)
   const [loadingProgress, setLoadingProgress] = useState(0)
   const modelRef = useRef<THREE.Group | null>(null)
-  const [showHelpers, setShowHelpers] = useState(true) // State to toggle helpers visibility
+  const [showHelpers, setShowHelpers] = useState(false) // State to toggle helpers visibility
   
   // Initialize Three.js scene
   useEffect(() => {
