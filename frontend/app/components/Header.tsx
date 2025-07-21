@@ -1,22 +1,23 @@
 import Link from "next/link";
-import { settingsQuery } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/live";
+import Image from "next/image";
 import { navItems } from "@/lib/navigation";
 
 export default async function Header() {
-  const { data: settings } = await sanityFetch({
-    query: settingsQuery,
-  });
 
   return (
     <header className="fixed top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-6">
-          {/* Logo - The Face Style */}
-          <Link className="flex items-center" href="/">
-            <span className="text-3xl font-black tracking-tight hover:opacity-70 transition-opacity">
-              {settings?.title || "KSDT"}
-            </span>
+          {/* Logo */}
+          <Link className="flex items-center hover:opacity-70 transition-opacity" href="/">
+            <Image
+              src="/images/ksdt-logo-1.png"
+              alt="KSDT Radio"
+              width={120}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           {/* Navigation Menu */}
