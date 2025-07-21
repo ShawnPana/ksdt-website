@@ -5,8 +5,9 @@
 
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
-import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './src/schemaTypes'
+import Logo from './src/components/Logo'
+import {customTheme} from './src/theme'
 import {structure} from './src/structure'
 import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
 import {
@@ -51,6 +52,10 @@ export default defineConfig({
 
   projectId,
   dataset,
+
+  icon: Logo,
+
+  theme: customTheme,
 
   plugins: [
     // Presentation tool configuration for Visual Editing
@@ -125,7 +130,6 @@ export default defineConfig({
     // Additional plugins for enhanced functionality
     unsplashImageAsset(),
     assist(),
-    visionTool(),
   ],
 
   // Schema configuration, imported from ./src/schemaTypes/index.ts
