@@ -17,7 +17,7 @@ export default async function BlogPage() {
         <div className="container mx-auto px-4">
           <div className="mb-12">
             <h1 className="text-4xl lg:text-6xl font-black text-black mb-4">
-              BLOG
+              Blog
             </h1>
           </div>
           

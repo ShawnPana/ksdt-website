@@ -31,9 +31,15 @@ export const aboutMe = defineType({
         list: [
           {title: 'Media', value: 'Media'},
           {title: 'Computer Engineering', value: 'Computer Engineering'},
-          // Add more teams here later: 
-          // {title: 'Programming', value: 'Programming'},
-          // {title: 'Events', value: 'Events'},
+          {title: 'Events', value: 'Events'},
+          {title: 'Music', value: 'Music'},
+          {title: 'Marketing', value: 'Marketing'},
+          {title: 'Audio', value: 'Audio'},
+          {title: 'Sports Broadcasting', value: 'Sports Broadcasting'},
+          {title: 'Sports Marketing', value: 'Sports Marketing'},
+          {title: 'Programming', value: 'Programming'},
+          {title: 'General Manager', value: 'General Manager'},
+          {title: 'Office Manager', value: 'Office Manager'}
         ],
       },
     }),
