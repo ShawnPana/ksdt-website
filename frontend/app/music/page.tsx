@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import RadioPlayerWrapper from '../components/music/RadioPlayerWrapper'
-import Shelf from '../components/music/Shelf'
+import RadioPlayerWrapper from './components/RadioPlayerWrapper'
+import Shelf from './components/Shelf'
 
 export const metadata: Metadata = {
   title: 'Music | KSDT Radio',

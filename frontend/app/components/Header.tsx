@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { settingsQuery } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
+import { navItems } from "@/lib/navigation";
 
 export default async function Header() {
   const { data: settings } = await sanityFetch({
@@ -20,18 +21,24 @@ export default async function Header() {
 
           {/* Navigation Menu */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/music" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
-              Music
-            </Link>
-            <Link href="/culture" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
-              Culture
-            </Link>
-            <Link href="/style" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
-              Style
-            </Link>
-            <Link href="/about" className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity">
-              About
-            </Link>
+            {navItems.map((item) => (
+              item.disabled ? (
+                <span 
+                  key={item.label}
+                  className="text-sm font-medium uppercase tracking-wide text-gray-400 cursor-not-allowed"
+                >
+                  {item.label}
+                </span>
+              ) : (
+                <Link 
+                  key={item.label}
+                  href={item.href} 
+                  className="text-sm font-medium uppercase tracking-wide hover:opacity-70 transition-opacity"
+                >
+                  {item.label}
+                </Link>
+              )
+            ))}
           </nav>
 
           {/* Mobile Menu Button */}

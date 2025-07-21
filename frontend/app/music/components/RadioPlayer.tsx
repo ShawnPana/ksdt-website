@@ -31,7 +31,7 @@ export default function RadioPlayer() {
       0.1, 
       1000
     )
-    camera.position.set(0, 0.70, 3)
+    camera.position.set(0, 0, 3) // Set camera at eye level (Y=0) instead of Y=0.70
     
     // Renderer
     const renderer = new THREE.WebGLRenderer({ 
@@ -74,6 +74,14 @@ export default function RadioPlayer() {
               child.receiveShadow = false
             }
           })
+          
+          // Center the model at the origin
+          const modelBounds = new THREE.Box3().setFromObject(model)
+          const center = modelBounds.getCenter(new THREE.Vector3())
+          model.position.sub(center) // Move model so its center is at origin
+          
+          // Ensure camera looks directly at the model center
+          camera.lookAt(0, 0, 0)
           
           modelRef.current = model
           scene.add(model)
@@ -154,6 +162,7 @@ export default function RadioPlayer() {
       
       camera.aspect = width / height
       camera.updateProjectionMatrix()
+      camera.lookAt(0, 0, 0) // Re-center the view after resize
       renderer.setSize(width, height)
     }
     
@@ -187,10 +196,10 @@ export default function RadioPlayer() {
   }, [showHelpers]) // Keep showHelpers in the dependency array
   
   return (
-    <div className="relative">
+    <div className="flex justify-center">
       <div 
         ref={containerRef} 
-        className="w-full h-[500px] bg-white rounded-lg overflow-hidden"
+        className="w-[750px] h-[500px] bg-white rounded-lg overflow-hidden"
       >
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10">
