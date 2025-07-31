@@ -77,6 +77,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${alteHaasGrotesk.variable} bg-white text-black`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       <body>
         {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
         <Toaster />
@@ -91,7 +94,7 @@ export default async function RootLayout({
         <SanityLive onError={handleError} />
         <Header />
         <main className="">
-          <section className="min-h-screen">{children}</section>
+          <section className="min-h-screen pb-safe">{children}</section>
         </main>
         {/* <Footer /> */}
         <SpeedInsights />
