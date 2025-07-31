@@ -81,3 +81,13 @@ header.fixed {
   margin-top: 0;
   padding-top: 0;
 }
+
+/* Hide scrollbars in mobile swipe view */
+.mobile-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

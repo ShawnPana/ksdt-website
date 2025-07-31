@@ -5,15 +5,24 @@ import { urlForImage } from "@/sanity/lib/utils";
 import { sanityFetch } from "@/sanity/lib/live";
 import { allPostsQuery } from "@/sanity/lib/queries";
 import { AllPostsQueryResult } from "@/sanity.types";
+import ClientMobileWrapper from "./components/ClientMobileWrapper";
 
 export default async function Page() {
   const { data: posts } = await sanityFetch({ query: allPostsQuery });
 
   const featuredPosts = posts?.slice(0, 3) || [];
   const remainingPosts = posts?.slice(3) || [];
+  const allPosts = posts || [];
 
   return (
-    <main className="bg-white min-h-screen">
+    <>
+      {/* Mobile Swipe View - Only visible on mobile */}
+      <div className="block md:hidden">
+        <ClientMobileWrapper posts={allPosts} />
+      </div>
+
+      {/* Desktop View - Hidden on mobile */}
+      <main className="hidden md:block bg-white min-h-screen">
       {/* Hero Section - The Face Style */}
       <section className="pt-28 pb-16">
         <div className="container mx-auto px-4">
@@ -40,12 +49,19 @@ export default async function Page() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-8 text-white">
                       <div className="mb-4">
-                        <span 
-                          className="text-white px-3 py-1 text-sm font-bold uppercase tracking-wide"
-                          style={{ backgroundColor: '#bc2026' }}
-                        >
-                          FEATURED
-                        </span>
+                        <svg width="90" height="24" className="inline-block">
+                          <defs>
+                            <mask id="textMask-desktop-main">
+                              <rect width="100%" height="100%" fill="white" />
+                              <text x="45" y="15.5" textAnchor="middle" 
+                                    fontSize="11" fontWeight="bold" fill="black" letterSpacing="0.5px"
+                                    fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                FEATURED
+                              </text>
+                            </mask>
+                          </defs>
+                          <rect width="100%" height="100%" fill="#bc2026" rx="3" mask="url(#textMask-desktop-main)" />
+                        </svg>
                       </div>
                       <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-4">
                         {featuredPosts[0].title}
@@ -81,12 +97,19 @@ export default async function Page() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-6 text-white">
                       <div className="mb-3">
-                        <span 
-                          className="text-white px-2 py-1 text-xs font-bold uppercase tracking-wide"
-                          style={{ backgroundColor: '#bc2026' }}
-                        >
-                          FEATURED
-                        </span>
+                        <svg width="75" height="20" className="inline-block">
+                          <defs>
+                            <mask id="textMask-desktop-side">
+                              <rect width="100%" height="100%" fill="white" />
+                              <text x="37.5" y="13" textAnchor="middle" 
+                                    fontSize="9" fontWeight="bold" fill="black" letterSpacing="0.5px"
+                                    fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                FEATURED
+                              </text>
+                            </mask>
+                          </defs>
+                          <rect width="100%" height="100%" fill="#bc2026" rx="2" mask="url(#textMask-desktop-side)" />
+                        </svg>
                       </div>
                       <h2 className="text-xl font-bold leading-tight">
                         {post.title}
@@ -100,5 +123,6 @@ export default async function Page() {
         </div>
       </section>
     </main>
+    </>
   );
 }

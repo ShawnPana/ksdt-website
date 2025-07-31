@@ -93,7 +93,7 @@ export default async function RootLayout({
         <main className="">
           <section className="min-h-screen">{children}</section>
         </main>
-        <Footer />
+        {/* <Footer /> */}
         <SpeedInsights />
       </body>
     </html>

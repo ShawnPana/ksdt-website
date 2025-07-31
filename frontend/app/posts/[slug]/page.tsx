@@ -72,7 +72,7 @@ export default async function PostPage(props: Props) {
 
   return (
     <>
-      <div className="">
+      <div className="pt-28">
         <div className="container my-12 lg:my-24 grid gap-12">
           <div>
             <div className="pb-6 grid gap-6 mb-6 border-b border-gray-100">
