@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function BookingPage() {
   return (
-    <main className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <div className="pt-28 pb-16">
         <div className="container mx-auto px-4">
           <div className="mb-12">
@@ -29,6 +29,6 @@ export default function BookingPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

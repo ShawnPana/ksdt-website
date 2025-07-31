@@ -12,12 +12,12 @@ export default async function BlogPage() {
   const { data: posts } = await sanityFetch({ query: allPostsQuery });
 
   return (
-    <main className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <div className="pt-28 pb-16">
         <div className="container mx-auto px-4">
           <PostGrid posts={posts || []} />
         </div>
       </div>
-    </main>
+    </div>
   );
 }
