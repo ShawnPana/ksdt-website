@@ -40,6 +40,7 @@ export const post = defineType({
         {type: 'contentBlock'},
         {type: 'imageBlock'},
         {type: 'galleryBlock'},
+        {type: 'block'}, // Support old format - will be treated as one text block
       ],
       validation: (rule) => rule.required().min(1),
     }),
