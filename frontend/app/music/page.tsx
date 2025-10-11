@@ -19,12 +19,12 @@ export default function MusicPage() {
       </div> */}
 
       {/* Twitch Live Stream */}
-      <section className="fixed top-20 left-0 right-0 bottom-0 flex items-center justify-center z-0">
+      <section className="flex items-center justify-center h-[calc(100vh-5rem)] z-0">
         <TwitchPlayer />
       </section>
 
       {/* Featured Albums Section */}
-      <section className="relative z-10 mb-16" style={{ marginTop: 'calc(100vh - 5rem)' }}>
+      <section className="relative z-10 mb-16">
         <Shelf showTitle={false} />
       </section>
     </div>

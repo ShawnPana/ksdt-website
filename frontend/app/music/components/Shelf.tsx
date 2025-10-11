@@ -196,14 +196,15 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     const raycaster = new THREE.Raycaster()
     const pointer = new THREE.Vector2()
     const tempVector = new THREE.Vector3() // Reusable vector for calculations
-    const albumMeshes: { 
-      mesh: THREE.Mesh; 
-      originalY: number; 
+    const albumMeshes: {
+      mesh: THREE.Mesh;
+      originalY: number;
       originalX: number;
       originalZ: number;
       originalRotationY: number;
       isHovered: boolean;
       isSelected: boolean;
+      spotifyUrl?: string;
     }[] = []
     
     // NEW: Parallel album loading
@@ -242,6 +243,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
             return {
               mesh,
               albumData: albums[i], // Original album data for links
+              spotifyUrl: albumData.spotifyUrl, // Spotify URL from fetched data
               index: i
             }
           } catch (error) {
@@ -257,7 +259,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
         meshResults.forEach((result) => {
           if (result) {
             result.mesh.rotation.y = Math.PI / 2
-            
+
             albumMeshes.push({
               mesh: result.mesh,
               originalY: result.mesh.position.y,
@@ -265,9 +267,10 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
               originalZ: result.mesh.position.z,
               originalRotationY: result.mesh.rotation.y,
               isHovered: false,
-              isSelected: false
+              isSelected: false,
+              spotifyUrl: result.spotifyUrl
             })
-            
+
             scene.add(result.mesh)
           }
         })
@@ -362,17 +365,25 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
             // Clicking on an already selected album while hovering - redirect to link
             const albumIndex = albumMeshes.indexOf(albumItem)
             const albumData = albums[albumIndex]
-            if (albumData && albumData.link) {
-              window.open(albumData.link, '_blank', 'noopener,noreferrer')
+            const link = albumItem.spotifyUrl || albumData?.link
+            console.log('Attempting to open link:', link)
+            console.log('Album item:', { isSelected: albumItem.isSelected, isHovered: albumItem.isHovered, spotifyUrl: albumItem.spotifyUrl })
+            if (link) {
+              window.open(link, '_blank', 'noopener,noreferrer')
+            } else {
+              console.warn('No link found for album')
             }
           } else if (!albumItem.isSelected) {
             // Reset all other albums first
             albumMeshes.forEach(item => {
               item.isSelected = false
             })
-            
+
             // Select the clicked album
+            console.log('Selecting album')
             albumItem.isSelected = true
+          } else {
+            console.log('Album already selected, hover to click again')
           }
         }
       } else {
