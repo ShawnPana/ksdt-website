@@ -70,12 +70,12 @@ const FEATURED_ALBUMS: AlbumData[] = [
     title: 'KAN KAN',
     artist: 'two thousand and whatever'
   },
-  {
-    id: '5',
-    spotifyData: { artist: 'Garden Angel', album: 'Bastian' },
-    title: 'Garden Angel',
-    artist: 'Bastian'
-  },
+  // {
+  //   id: '5',
+  //   spotifyData: { artist: 'Garden Angel', album: 'Bastian' },
+  //   title: 'Garden Angel',
+  //   artist: 'Bastian'
+  // },
   {
     id: '6',
     spotifyData: { artist: 'Atariwept', album: 'I Heart Puppy Mills...' },
@@ -118,13 +118,19 @@ interface ShelfProps {
   title?: string;
   albums?: AlbumData[];
   showTitle?: boolean;
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
-export default function Shelf({ title = "Featured Albums", albums: propAlbums, showTitle = true }: ShelfProps) {
+export default function Shelf({ title = "Featured Albums", albums: propAlbums, showTitle = true, onLoadingChange }: ShelfProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [albums] = useState<AlbumData[]>(propAlbums || FEATURED_ALBUMS)
-  
+
+  // Immediately enable the Discover button on mount
+  useEffect(() => {
+    onLoadingChange?.(false)
+  }, [onLoadingChange])
+
   useEffect(() => {
     if (!containerRef.current) return
     
@@ -277,10 +283,12 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
         
         console.log(`Successfully loaded ${albumMeshes.length}/${albums.length} albums`)
         setIsLoading(false)
-        
+        onLoadingChange?.(false)
+
       } catch (error) {
         console.error('Failed to load albums:', error)
         setIsLoading(false)
+        onLoadingChange?.(false)
       }
     }
     
