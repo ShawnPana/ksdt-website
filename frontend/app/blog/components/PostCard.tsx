@@ -43,7 +43,8 @@ export default function PostCard({ post, isFeatured = false }: PostCardProps) {
                 <rect width="100%" height="100%" fill="#bc2026" rx="2" />
                 <text x="32.5" y="11.5" textAnchor="middle"
                       fontSize="8" fontWeight="bold" fill="white" letterSpacing="0.3px"
-                      fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                      // fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                      fontFamily="var(--font-barlow), Arial, sans-serif">
                   FEATURED
                 </text>
               </svg>

@@ -19,11 +19,12 @@ export default function Header() {
           {/* Logo */}
           <Link className="flex items-center hover:opacity-70 transition-opacity" href="/">
             <Image
-              src="/images/ksdt-logo-1.png"
+              // src="/images/ksdt-logo-1.png"
+              src="/images/logo_updated_black.png"
               alt="KSDT Radio"
-              width={120}
-              height={40}
-              className="h-8 w-auto"
+              width={200}
+              height={200}
+              className="h-20 w-auto"
               priority
             />
           </Link>

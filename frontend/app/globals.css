@@ -36,7 +36,9 @@
 
 /* The Face inspired typography */
 body {
-  font-family: var(--font-sans);
+  /* font-family: var(--font-sans); */
+  font-family: "Barlow";
+  src: url('../public/fonts/BarlowFamily/BarlowReg/Barlow-Regular.ttf') format('ttf');
   line-height: 1.6;
   color: var(--color-black);
   background-color: var(--color-white);

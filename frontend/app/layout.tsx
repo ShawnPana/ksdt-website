@@ -69,6 +69,24 @@ const alteHaasGrotesk = localFont({
   display: "swap",
 });
 
+const barlow = localFont({
+  src: [
+    {
+      path: "../public/fonts/BarlowFamily/BarlowReg/Barlow-Regular.ttf",
+      // path: "../public/fonts/BarlowFamily/BarlowReg/Barlow-Black.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/BarlowFamily/BarlowReg/Barlow-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-barlow",
+  display: "swap",
+})
+
 export default async function RootLayout({
   children,
 }: {
@@ -77,7 +95,8 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className={`${alteHaasGrotesk.variable} bg-white text-black`}>
+    // <html lang="en" className={`${alteHaasGrotesk.variable} bg-white text-black`}>
+    <html lang="en" className={`${barlow.variable} bg-white text-black`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>

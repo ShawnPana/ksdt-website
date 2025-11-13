@@ -7,6 +7,8 @@ import { allPostsQuery } from "@/sanity/lib/queries";
 import { AllPostsQueryResult } from "@/sanity.types";
 import ClientMobileWrapper from "./components/ClientMobileWrapper";
 
+import './globals.css';
+
 export default async function Page() {
   const { data: posts } = await sanityFetch({ query: allPostsQuery });
 
@@ -53,7 +55,8 @@ export default async function Page() {
                           <rect width="100%" height="100%" fill="#bc2026" rx="3" />
                           <text x="45" y="15.5" textAnchor="middle"
                                 fontSize="11" fontWeight="bold" fill="white" letterSpacing="0.5px"
-                                fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                // fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                fontFamily="var(--font-barlow), Arial, sans-serif">
                             FEATURED
                           </text>
                         </svg>
@@ -96,7 +99,8 @@ export default async function Page() {
                           <rect width="100%" height="100%" fill="#bc2026" rx="2" />
                           <text x="37.5" y="13" textAnchor="middle"
                                 fontSize="9" fontWeight="bold" fill="white" letterSpacing="0.5px"
-                                fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                // fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                                fontFamily="var(--font-barlow), Arial, sans-serif">
                             FEATURED
                           </text>
                         </svg>
