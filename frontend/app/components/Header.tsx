@@ -24,6 +24,8 @@ export default function Header() {
               alt="KSDT Radio"
               width={200}
               height={200}
+              // below h-x is lever to control size of header
+              // Currently hard-coded, a more capable person should make it not hard coded
               className="h-20 w-auto"
               priority
             />

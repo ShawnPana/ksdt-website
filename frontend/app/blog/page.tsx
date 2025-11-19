@@ -13,7 +13,8 @@ export default async function BlogPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="pt-20 pb-16">
+      {/* Value embedded in 'pt-x' controls padding between header and content */}
+      <div className="pt-30 pb-16">
         <div className="container mx-auto px-4">
           <div className="pt-4">
             <PostGrid posts={posts || []} />

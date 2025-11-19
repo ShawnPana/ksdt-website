@@ -26,7 +26,7 @@ export default async function Page() {
       {/* Desktop View - Hidden on mobile */}
       <main className="hidden md:block bg-white min-h-screen">
       {/* Hero Section - The Face Style */}
-      <section className="pt-28 pb-16">
+      <section className="pt-38 pb-16">
         <div className="container mx-auto px-4">
           {/* Featured Articles Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">

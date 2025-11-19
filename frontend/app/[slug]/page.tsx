@@ -76,7 +76,7 @@ export default async function Page(props: Props) {
 
   
   return (
-    <div className="pt-20 pb-12 lg:pb-24">
+    <div className="pt-30 pb-12 lg:pb-24">
       <Head>
         <title>{page.heading}</title>
       </Head>
