@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SportsPage() {
   return (
-    <div className="fixed top-20 inset-x-0 bottom-0 bg-white overflow-hidden">
+    <div className="fixed pt-30 top-20 inset-x-0 bottom-0 bg-white overflow-hidden">
       <SportsPlayer />
     </div>
   )

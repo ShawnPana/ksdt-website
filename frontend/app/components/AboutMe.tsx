@@ -28,7 +28,7 @@ export default function AboutMe({ block }: AboutMeProps) {
   const displayName = block.team || 'Team';
 
   return (
-    <div className="container my-12">
+    <div className="container pt-50 my-12">
       <div className="text-center">
         {/* Team Section Header */}
         <h2 className="text-3xl font-bold text-black mb-12">

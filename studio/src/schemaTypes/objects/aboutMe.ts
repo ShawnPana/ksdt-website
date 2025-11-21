@@ -33,14 +33,13 @@ export const aboutMe = defineType({
           {title: 'Computer Engineering', value: 'Computer Engineering'},
           {title: 'Events', value: 'Events'},
           {title: 'Music', value: 'Music'},
-          {title: 'Creative', value: 'Creative'},
+          {title: 'Marketing', value: 'Marketing'},
           {title: 'Audio', value: 'Audio'},
           {title: 'Sports Broadcasting', value: 'Sports Broadcasting'},
           {title: 'Sports Marketing', value: 'Sports Marketing'},
           {title: 'Programming', value: 'Programming'},
           {title: 'General Manager', value: 'General Manager'},
-          {title: 'Office Manager', value: 'Office Manager'},
-          {title: 'News Broadcasting', value: 'News Broadcasting'}
+          {title: 'Office Manager', value: 'Office Manager'}
         ],
       },
     }),

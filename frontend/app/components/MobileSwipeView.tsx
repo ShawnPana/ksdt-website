@@ -63,7 +63,8 @@ export default function MobileSwipeView({ posts }: MobileSwipeViewProps) {
                     <rect width="100%" height="100%" fill="#bc2026" rx="3" />
                     <text x="45" y="15.5" textAnchor="middle"
                           fontSize="11" fontWeight="bold" fill="white" letterSpacing="0.5px"
-                          fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                          // fontFamily="var(--font-alte-haas-grotesk), Arial, sans-serif">
+                          fontFamily="var(--font-barlow), Arial, sans-serif">
                       FEATURED
                     </text>
                   </svg>
@@ -104,11 +105,12 @@ export default function MobileSwipeView({ posts }: MobileSwipeViewProps) {
             {/* Logo - Same as desktop */}
             <Link className="flex items-center hover:opacity-70 transition-opacity" href="/">
               <Image
-                src="/images/ksdt-logo-1.png"
+                // src="/images/ksdt-logo-1.png"
+                src = "/images/logo_updated_white_unofficial.png"
                 alt="KSDT Radio"
-                width={120}
-                height={40}
-                className="h-8 w-auto"
+                width={200}
+                height={200}
+                className="h-20 w-auto"
                 priority
               />
             </Link>

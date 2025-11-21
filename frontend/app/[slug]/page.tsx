@@ -5,7 +5,13 @@ import PageBuilderPage from "@/app/components/PageBuilder";
 import { sanityFetch } from "@/sanity/lib/live";
 import { getPageQuery, pagesSlugs } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
-import { PageOnboarding } from "@/app/components/Onboarding";
+import  NotFound  from "../global-not-found"
+// import { notFound } from "next/navigation";
+
+/**
+ * From what I can tell, this file handles weird runtime rendering 
+ * things. 
+ */
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -50,16 +56,27 @@ export default async function Page(props: Props) {
     sanityFetch({ query: getPageQuery, params }),
   ]);
 
-  if (!page?._id) {
+  /**
+   * Handles 404
+   */
+  if (page == null) {
+  // From what I saw this is the correct not hacky implementation
+  // but when ran from my machine it does not properly link to
+  // dedicated not-found.tsx file
+  // https://nextjs.org/docs/app/api-reference/functions/not-found
+    // notFound();
+    // This is the hacky implementation of new 404 page
+    // TODO: Stylize 404 page to actually not be awful looking lol
     return (
       <div className="py-40">
-        <PageOnboarding />
+        <NotFound/>
       </div>
     );
   }
 
+  
   return (
-    <div className="pt-20 pb-12 lg:pb-24">
+    <div className="pt-30 pb-12 lg:pb-24">
       <Head>
         <title>{page.heading}</title>
       </Head>
