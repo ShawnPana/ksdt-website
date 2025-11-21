@@ -13,17 +13,26 @@ export default function MusicPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    // Manage scroll on visible album shelf
     if (isShelfVisible) {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-      });
+        document.body.classList.add('no-scroll');
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
     } else {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+        document.body.classList.remove('no-scroll');
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
+
+    // Cleanup: Re-enable scrolling if component unmounts while 
+    // the shelf is visible (e.g., changing routes).
+    return () => {
+        document.body.classList.remove('no-scroll');
+    };
   }, [isShelfVisible]);
 
   const handleLoadingChange = (loading: boolean) => {
@@ -53,7 +62,7 @@ export default function MusicPage() {
         </button>
       </div>
 
-      {/* Twitch Live Stream - Animates up when shelf is visible */}
+      {/* Twitch and Radio.co Live Streams - Animates up when shelf is visible */}
       <motion.section
         className="flex items-center justify-center z-0 flex-wrap gap-4 py-4"
         animate={{
