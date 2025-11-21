@@ -14,19 +14,17 @@ export default function MusicPage() {
 
   useEffect(() => {
     if (isShelfVisible) {
-      // Scrolls the window to the bottom of the page
       window.scrollTo({
         top: document.body.scrollHeight,
-        behavior: 'smooth' // For a smooth scrolling effect
+        behavior: 'smooth'
       });
     } else {
-      // Optional: Scroll back to the top when the shelf is hidden
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
     }
-  }, [isShelfVisible]); // Dependency array: runs whenever isShelfVisible changes
+  }, [isShelfVisible]);
 
   const handleLoadingChange = (loading: boolean) => {
     setIsLoading(loading)
