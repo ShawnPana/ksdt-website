@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 // import RadioPlayerWrapper from './components/RadioPlayerWrapper'
 import Shelf from './components/Shelf'
 import TwitchPlayer from './components/TwitchPlayer'
+import MusicPlayer from './components/MusicPlayer'
+import NowPlaying from './components/NowPlaying'
 
 export default function MusicPage() {
   const [isShelfVisible, setIsShelfVisible] = useState(false)
@@ -21,7 +23,7 @@ export default function MusicPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-20 h-screen overflow-hidden relative">
+    <div className="container mx-auto px-4 pt-20 h-screen relative">
       {/* Discover Button - Fixed position */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
         <button
@@ -39,13 +41,15 @@ export default function MusicPage() {
 
       {/* Twitch Live Stream - Animates up when shelf is visible */}
       <motion.section
-        className="flex items-center justify-center h-[calc(100vh-5rem)] z-0"
+        className="flex items-center justify-center z-0 flex-wrap gap-4"
         animate={{
           y: isShelfVisible ? -300 : 0
         }}
         transition={springTransition}
       >
         <TwitchPlayer />
+        <MusicPlayer />
+        <NowPlaying />
       </motion.section>
 
       {/* Featured Albums Section - Slides up from bottom */}
