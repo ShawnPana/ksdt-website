@@ -13,7 +13,7 @@ export default function TwitchPlayer() {
   const parentParams = parentDomains.map(domain => `parent=${domain}`).join('&')
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-4">
+    <div className="w-full max-w-7xl mx-auto px-4">
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Twitch Video Player */}
         <div className="flex-1">
