@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 // import RadioPlayerWrapper from './components/RadioPlayerWrapper'
 import Shelf from './components/Shelf'
@@ -11,6 +11,22 @@ import NowPlaying from './components/NowPlaying'
 export default function MusicPage() {
   const [isShelfVisible, setIsShelfVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    if (isShelfVisible) {
+      // Scrolls the window to the bottom of the page
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth' // For a smooth scrolling effect
+      });
+    } else {
+      // Optional: Scroll back to the top when the shelf is hidden
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, [isShelfVisible]); // Dependency array: runs whenever isShelfVisible changes
 
   const handleLoadingChange = (loading: boolean) => {
     setIsLoading(loading)
@@ -23,7 +39,7 @@ export default function MusicPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-20 h-screen relative">
+    <div className="container mx-auto px-4 pt-32 h-screen relative">
       {/* Discover Button - Fixed position */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
         <button
