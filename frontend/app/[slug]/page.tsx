@@ -68,9 +68,7 @@ export default async function Page(props: Props) {
     // This is the hacky implementation of new 404 page
     // TODO: Stylize 404 page to actually not be awful looking lol
     return (
-      <div className="py-40">
-        <NotFound/>
-      </div>
+      <NotFound/>
     );
   }
 
