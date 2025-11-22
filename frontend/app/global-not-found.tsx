@@ -26,7 +26,7 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-8"> 
+    <div className="flex flex-col items-center justify-center min-h-screen text-center p-8 pt-30"> 
       <Header /> 
       <h2 className="text-3xl font-bold mt-8">404 - Not Found</h2>
       <p className="text-gray-600 mt-4">Could not find the requested resource.</p>
