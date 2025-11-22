@@ -121,3 +121,7 @@ header.fixed {
     height: 100dvh; /* Dynamic viewport height */
   }
 }
+
+body.no-scroll {
+  overflow: hidden !important;
+}

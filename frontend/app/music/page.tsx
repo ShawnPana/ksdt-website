@@ -1,14 +1,39 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 // import RadioPlayerWrapper from './components/RadioPlayerWrapper'
 import Shelf from './components/Shelf'
 import TwitchPlayer from './components/TwitchPlayer'
+import MusicPlayer from './components/MusicPlayer'
+import NowPlaying from './components/NowPlaying'
 
 export default function MusicPage() {
   const [isShelfVisible, setIsShelfVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Manage scroll on visible album shelf
+    if (isShelfVisible) {
+        document.body.classList.add('no-scroll');
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    } else {
+        document.body.classList.remove('no-scroll');
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Cleanup: Re-enable scrolling if component unmounts while 
+    // the shelf is visible (e.g., changing routes).
+    return () => {
+        document.body.classList.remove('no-scroll');
+    };
+  }, [isShelfVisible]);
 
   const handleLoadingChange = (loading: boolean) => {
     setIsLoading(loading)
@@ -21,7 +46,7 @@ export default function MusicPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 pt-20 h-screen overflow-hidden relative">
+    <div className="container mx-auto px-4 pt-32 h-screen relative">
       {/* Discover Button - Fixed position */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
         <button
@@ -37,15 +62,17 @@ export default function MusicPage() {
         </button>
       </div>
 
-      {/* Twitch Live Stream - Animates up when shelf is visible */}
+      {/* Twitch and Radio.co Live Streams - Animates up when shelf is visible */}
       <motion.section
-        className="flex items-center justify-center h-[calc(100vh-5rem)] z-0"
+        className="flex items-center justify-center h-[calc(100vh)] z-0 flex-wrap gap-4 py-4"
         animate={{
-          y: isShelfVisible ? -300 : 0
+          y: isShelfVisible ? -450 : 0
         }}
         transition={springTransition}
       >
         <TwitchPlayer />
+        <MusicPlayer />
+        <NowPlaying />
       </motion.section>
 
       {/* Featured Albums Section - Slides up from bottom */}
