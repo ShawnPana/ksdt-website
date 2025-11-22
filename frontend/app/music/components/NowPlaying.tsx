@@ -3,10 +3,10 @@
 export default function NowPlaying() {
 
   return (
-    <div className="flex flex-start overflow-hidden pb-4">
+    <div className="overflow-hidden">
       <iframe
-        src="https://lastfm-recently-played.vercel.app/api?user=KSDT-RADIO&nowplaying=true&count=6&show_user=header&width=391"
-        className="w-98 h-98 top-0 block align-top"
+        src="https://lastfm-recently-played.vercel.app/api?user=KSDT-RADIO&nowplaying=true&count=5&show_user=header&width=334"
+        className="w-[334px] h-[334px]"
         title="KSDT Radio Last.fm"
         scrolling="no"
       />

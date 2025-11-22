@@ -15,6 +15,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { createAlbumMesh, fetchAlbumData, createAlbumMeshFromData } from './Album'
+import useWindowSize from '../hooks/useWindowSize'
 
 // Album data structure
 interface AlbumData {
@@ -125,6 +126,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
   const containerRef = useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [albums] = useState<AlbumData[]>(propAlbums || FEATURED_ALBUMS)
+  const windowSize = useWindowSize()
 
   // Immediately enable the Discover button on mount
   useEffect(() => {
@@ -214,6 +216,10 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
     }[] = []
     
     // NEW: Parallel album loading
+    const frontZ = 1
+    const backZ = 0
+    const meshScale = 0.8 * Math.log(windowSize.width) / Math.log(1472)
+
     const loadAlbums = async () => {
       const albumSpacing = 0.05
       const startX = -(albums.length - 1) * albumSpacing / 2
@@ -227,8 +233,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
             x: startX + (i * albumSpacing),
             y: 0,
             z: 0
-          },
-          scale: 0.8
+          }
         })))
         
         console.log('Album data fetched, creating meshes...')
@@ -241,9 +246,9 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
               position: {
                 x: startX + (i * albumSpacing),
                 y: 0,
-                z: 0
+                z: backZ
               },
-              scale: 0.8
+              scale: meshScale
             })
             
             return {
@@ -438,7 +443,7 @@ export default function Shelf({ title = "Featured Albums", albums: propAlbums, s
         
         // Selection effect - move to center front view
         const targetX = albumItem.isSelected ? 0 : albumItem.originalX // Move to center (x = 0)
-        const targetZ = albumItem.isSelected ? 1 : albumItem.originalZ // Move forward in front of other albums
+        const targetZ = albumItem.isSelected ? frontZ : albumItem.originalZ // Move forward in front of other albums
         const targetRotationY = albumItem.isSelected ? 0 : albumItem.originalRotationY
         const targetY = albumItem.isSelected ? albumItem.originalY : hoverTargetY
         
