@@ -6,7 +6,7 @@ export default function TwitchPlayer() {
     'localhost',
     'ksdtradio.com',
     'www.ksdtradio.com',
-    'ksdt-git-frontend-shawn-panas-projects.vercel.app'
+    'ksdtradio.vercel.app'
   ]
 
   // Build parent parameter string for Twitch URLs
