@@ -117,10 +117,7 @@ export const settings = defineType({
       type: 'image',
       description: 'Displayed on social cards and search engine results.',
       options: {
-        hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
+        hotspot: true
       },
       fields: [
         defineField({
